@@ -25,21 +25,21 @@ pipeline {
                 sh 'mvn clean package  -DskipTests'
             }
         }
-     //   stage('sonarqube checks') {
-      //      steps {
-      //          script {
-     //           withSonarQubeEnv(installationName: 'Sonarcloud', credentialsId: 'SonarCloud') {
-     //            sh 'mvn clean package sonar:sonar'
-     //            }
+        stage('sonarqube checks') {
+            steps {
+                script {
+                withSonarQubeEnv(credentialsId: 'Sonarqube', installationName: 'Sonarscanner') {
+                 sh 'mvn clean package sonar:sonar'
+                 }
     //                timeout(time: 3, unit: 'MINUTES') {
     //                   def qg = waitForQualityGate()
     //                if (qg.status != 'OK') {
     //                   error "Pipeline aborted due to quality gate failure: ${qg.status}"
     //                    }
     //            }
-   //         }
-   //     }
-  //  }
+            }
+          }
+      }
         stage('Build the Image') {
             steps {
                 script {
@@ -49,7 +49,7 @@ pipeline {
         }
         stage('Deploy the image to Amazon ECR') {
             steps {
-                script {
+               script {
                 docker.withRegistry("http://" + registry, "ecr:eu-west-2:" + resistryCredentials) {
                 dockerImage.push()
           }
