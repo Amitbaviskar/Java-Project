@@ -28,7 +28,7 @@ pipeline {
         stage('sonarqube checks') {
             steps {
                 script {
-                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonarnewscanner') {
+                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonarkey') {
         //          withSonarQubeEnv(credentialsId: 'sonardemo', installationName: 'sonarqube') {
                  sh 'mvn clean package sonar:sonar'
                  }
